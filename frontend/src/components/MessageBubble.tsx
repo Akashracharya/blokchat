@@ -27,12 +27,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, index }) => {
         {!message.isSent && (
           <p className="text-sm text-gray-400 mb-1 ml-3">{message.sender}</p>
         )}
-        
+
         <motion.div
           className={`
             px-4 py-3 rounded-2xl shadow-lg backdrop-blur-sm
-            ${message.isSent 
-              ? 'bg-blue-600/80 text-white' 
+            ${message.isSent
+              ? 'bg-purple-800/90 text-white'
               : 'bg-gray-700/80 text-gray-100 border border-gray-600/30'
             }
           `}
@@ -40,24 +40,30 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, index }) => {
           transition={{ type: 'spring', stiffness: 400 }}
         >
           <p className="text-sm leading-relaxed">{message.content}</p>
-          
+
           {/* Message footer */}
           <div className={`flex items-center justify-between mt-2 ${message.isSent ? 'flex-row-reverse' : 'flex-row'}`}>
             <span className="text-xs opacity-70">{message.timestamp}</span>
-            
+
             {message.transactionId && (
               <motion.button
                 onClick={copyTransactionId}
                 className={`
-                  flex items-center space-x-1 text-xs opacity-60 hover:opacity-100 
-                  px-2 py-1 rounded-md transition-all
-                  ${message.isSent ? 'hover:bg-blue-700/50' : 'hover:bg-gray-600/50'}
-                `}
-                whileHover={{ scale: 1.05 }}
+      flex items-center space-x-1 text-xs opacity-80 hover:opacity-100 
+      px-2.5 py-1.5 rounded-md border border-gray-400/50 transition-all
+      ${message.isSent
+                    ? 'hover:bg-purple-900/50 border-purple-400/50 text-purple-200'
+                    : 'hover:bg-gray-600/50 border-gray-400/50 text-gray-200'
+                  }
+    `}
+                style={{ fontSize: '0.75rem', padding: '0.4rem 0.6rem' }} // bit bigger padding
+                whileHover={{ scale: 1.07 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Copy size={12} />
-                <span>TX: {message.transactionId.slice(-6)}</span>
+                <Copy size={14} /> {/* icon slightly bigger */}
+                <span className="font-medium">
+                  TX: {message.transactionId.slice(-6)}
+                </span>
               </motion.button>
             )}
           </div>
