@@ -28,7 +28,6 @@ app.post("/api/gemini", async (req, res) => {
 
     console.log("🔍 Full Gemini result:", JSON.stringify(result, null, 2));
 
-    // Correct extraction for SDK format
     let reply = "No response";
     if (result?.candidates?.length > 0) {
       const parts = result.candidates[0]?.content?.parts;
