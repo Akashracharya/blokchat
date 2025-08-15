@@ -73,13 +73,13 @@ const RoomList: React.FC<RoomListProps> = ({
           </div>
 
           {/* Rooms List */}
-          <div className="flex-1 overflow-y-auto space-y-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+          <div className="flex-1 overflow-y-auto space-y-3 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
             <AnimatePresence>
               {filteredRooms.map((room, index) => (
                 <motion.button
                   key={room.id}
                   className={`
-                    w-full p-3 rounded-xl text-left transition-all duration-200
+                    w-full px-3 py-3 rounded-xl text-left transition-all duration-200
                     backdrop-blur-xl border
                     ${activeRoom === room.id 
                       ? 'bg-white/20 border-white/20 shadow-lg' // Active tab glassmorphic
