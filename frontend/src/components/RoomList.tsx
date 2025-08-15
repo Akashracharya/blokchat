@@ -52,16 +52,15 @@ const RoomList: React.FC<RoomListProps> = ({
         className={`
           fixed lg:relative z-50 lg:z-auto
           w-80 lg:w-64 xl:w-[300px] h-full
-          bg-gray-900/95 lg:bg-gray-900/80 
-          backdrop-blur-md border-r border-gray-700/50
-          ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-          transition-transform duration-300 ease-in-out
+          
         `}
         initial={{ x: -320 }}
         animate={{ x: isOpen || window.innerWidth >= 1024 ? 0 : -320 }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
       >
-        <div className="flex flex-col h-full p-4">
+        {/* Mobile background (solid) */}
+  <div className="block lg:hidden absolute inset-0 bg-gray-900/95 border-r border-gray-700/50"></div>
+        <div className="relative flex flex-col h-full p-4">
           {/* Search Bar */}
           <div className="relative mb-4">
             <Search className="absolute left-3 top-3 text-gray-400" size={18} />

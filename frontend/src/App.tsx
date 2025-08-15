@@ -51,7 +51,7 @@ function App() {
   const currentMessages = messages[activeRoom] || [];
 
   return (
-    <div className="h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white overflow-hidden">
+    <div className="h-screen bg-[url('/images/bg.jpg')] bg-cover bg-center text-white overflow-hidden flex flex-col">
       {/* Header */}
       <Header
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -61,56 +61,53 @@ function App() {
       />
 
       {/* Main Content Area */}
-      <div className="flex-1 bg-[url('/images/bg.jpg')] bg-cover bg-center p-4">
-      <div className="flex h-[85vh] max-w-[1200px] mx-auto bg-gray-900/40 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden border border-gray-700 relative">
-        {/* Left Sidebar - Rooms */}
-        <RoomList
-          rooms={dummyRooms}
-          activeRoom={activeRoom}
-          onRoomSelect={handleRoomSelect}
-          isOpen={isSidebarOpen}
-          onClose={() => setIsSidebarOpen(false)}
-        />
+      <div className="flex-1 p-4 flex justify-center items-start">
+        <div className="flex h-[86vh] max-w-[1200px] w-full bg-gray-900/40 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden border border-gray-700 relative mb-0 lg:mb-8">
+          
+          {/* Left Sidebar - Rooms */}
+          <RoomList
+            rooms={dummyRooms}
+            activeRoom={activeRoom}
+            onRoomSelect={handleRoomSelect}
+            isOpen={isSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
+          />
 
-        {/* Main Chat Area */}
-        <motion.div
-          className="flex-1 flex min-w-0"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3, delay: 0.1 }}
-        >
-          {/* Chat Window */}
-          <div className="flex-1 min-w-0 ">
-            <ChatWindow
-              messages={currentMessages}
-              onSendMessage={handleSendMessage}
-              activeRoomName={activeRoomData?.name || 'Unknown Room'}
+          {/* Main Chat Area */}
+          <motion.div
+            className="flex-1 flex min-w-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+          >
+            <div className="flex-1 min-w-0">
+              <ChatWindow
+                messages={currentMessages}
+                onSendMessage={handleSendMessage}
+                activeRoomName={activeRoomData?.name || 'Unknown Room'}
+              />
+            </div>
+          </motion.div>
+
+          {/* Right Panel - AI Chatbot (DESKTOP ONLY) */}
+          <div className="hidden xl:block w-[350px] border-l border-gray-700">
+            <AIChatbot
+              isOpen={true}                 // always open on desktop
+              onClose={() => { }}
+              initialMessages={dummyBotMessages}
+              variant="desktop"
             />
           </div>
-        </motion.div>
 
-        {/* Right Panel - AI Chatbot (DESKTOP ONLY) */}
-        <div className="hidden xl:block w-[350px] border-l border-gray-700">
+          {/* Mobile Overlay (MOBILE ONLY) */}
           <AIChatbot
-            isOpen={true}                 // always open on desktop
-            onClose={() => { }}            // no close needed on desktop
+            isOpen={isBotPanelOpen}
+            onClose={() => setIsBotPanelOpen(false)}
             initialMessages={dummyBotMessages}
-            variant="desktop"             // 👈 new prop
+            variant="mobile"
           />
         </div>
-
-        {/* Mobile Overlay (MOBILE ONLY) */}
-        <AIChatbot
-          isOpen={isBotPanelOpen}         // toggled from Header button
-          onClose={() => setIsBotPanelOpen(false)}
-          initialMessages={dummyBotMessages}
-          variant="mobile"                // 👈 new prop
-        />
-
-
-
       </div>
-    </div>
     </div>
   );
 }

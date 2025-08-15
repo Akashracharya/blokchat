@@ -37,10 +37,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full bg-gray-900/50">
-      {/* Chat Header */}
+    <div className="flex flex-col h-full relative">
+      {/* Chat Header - Glassmorphic */}
       <motion.div 
-        className="h-16 bg-gray-800/50 backdrop-blur-md border-b border-gray-700/50 flex items-center px-6"
+        className="h-16 bg-white/10 backdrop-blur-xl border-b border-white/10 flex items-center px-6 relative z-10"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
@@ -52,13 +52,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           <h2 className="text-lg font-semibold text-white">{activeRoomName}</h2>
           <div className="flex items-center space-x-1">
             <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-            <span className="text-sm text-gray-400">Online</span>
+            <span className="text-sm text-gray-300">Online</span>
           </div>
         </div>
       </motion.div>
 
-      {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+      {/* Messages Area - subtle transparent bg for readability */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent bg-gray-900/30">
         <AnimatePresence>
           {messages.map((message, index) => (
             <MessageBubble key={message.id} message={message} index={index} />
@@ -67,9 +67,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Message Input */}
+      {/* Message Input - Glassmorphic */}
       <motion.div 
-        className="p-4 bg-gray-800/30 backdrop-blur-md border-t border-gray-700/50"
+        className="p-4 bg-white/10 backdrop-blur-xl border-t border-white/10 relative z-10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.1 }}
