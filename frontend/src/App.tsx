@@ -90,14 +90,17 @@ function App() {
           </motion.div>
 
           {/* Right Panel - AI Chatbot (DESKTOP ONLY) */}
-          <div className="hidden xl:block w-[350px] border-l border-gray-700">
-            <AIChatbot
-              isOpen={true}                 // always open on desktop
-              onClose={() => { }}
-              initialMessages={dummyBotMessages}
-              variant="desktop"
-            />
+          <div className="hidden xl:flex w-[350px] p-3">
+            <div className="flex-1 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/10 shadow-lg overflow-hidden">
+              <AIChatbot
+                isOpen={true}
+                onClose={() => { }}
+                initialMessages={dummyBotMessages}
+                variant="desktop"
+              />
+            </div>
           </div>
+
 
           {/* Mobile Overlay (MOBILE ONLY) */}
           <AIChatbot
