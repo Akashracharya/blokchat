@@ -69,7 +69,7 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ isOpen, onClose, initialMessages,
 
   // === Shared inner UI ===
   const ChatbotUI = (
-    <div className="h-full m-2 rounded-2xl bg-gray-800/40 backdrop-blur-xl border border-gray-600/30 shadow-2xl flex flex-col">
+    <div className="h-full rounded-none bg-gray-800/40 border-l border-gray-600/30 flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-gray-600/30">
         <div className="flex items-center space-x-3">
