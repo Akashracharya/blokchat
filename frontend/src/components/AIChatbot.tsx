@@ -25,16 +25,20 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ isOpen, onClose, initialMessages,
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const generateBotResponse = (userMessage: string): string => {
-    const responses = [
-      "That's an interesting point! Let me think about that...",
-      "I understand your question. Here's what I think:",
-      "Great question! Based on my knowledge:",
-      "Let me help you with that:",
-      "That's a thoughtful inquiry. My suggestion would be:"
-    ];
-    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-    return `${randomResponse} Regarding "${userMessage}", I'd be happy to provide some insights and recommendations.`;
+  // Call backend Gemini API
+  const generateBotResponse = async (userMessage: string): Promise<string> => {
+    try {
+      const res = await fetch("http://localhost:5000/api/gemini", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userMessage }),
+      });
+      const data = await res.json();
+      return data.reply || "Sorry, I couldn't generate a response.";
+    } catch (error) {
+      console.error(error);
+      return "Error connecting to AI server.";
+    }
   };
 
   const handleSendMessage = async (e: React.FormEvent) => {
@@ -52,22 +56,23 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ isOpen, onClose, initialMessages,
     setNewMessage('');
     setIsTyping(true);
 
-    // Simulate bot typing delay
-    setTimeout(() => {
-      const botMsg: BotMessage = {
-        id: (Date.now() + 1).toString(),
-        content: generateBotResponse(userMsg.content),
-        isBot: true,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-      setMessages(prev => [...prev, botMsg]);
-      setIsTyping(false);
-    }, 1500);
+    // Wait for Gemini API response
+    const botReply = await generateBotResponse(userMsg.content);
+
+    const botMsg: BotMessage = {
+      id: (Date.now() + 1).toString(),
+      content: botReply,
+      isBot: true,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    setMessages(prev => [...prev, botMsg]);
+    setIsTyping(false);
 
     inputRef.current?.focus();
   };
 
-  // === Shared inner UI ===
+  // === UI remains same ===
   const ChatbotUI = (
     <div className="h-full rounded-none bg-gray-800/40 border-l border-gray-600/30 flex flex-col">
       {/* Header */}
@@ -97,7 +102,7 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ isOpen, onClose, initialMessages,
               className={`flex ${message.isBot ? 'justify-start' : 'justify-end'}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ delay: index * 0.05 }}
             >
               <div className={`max-w-xs ${message.isBot ? 'order-1' : 'order-2'}`}>
                 <div className="flex items-center space-x-2 mb-2">
